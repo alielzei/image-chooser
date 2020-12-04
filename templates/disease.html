@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <style>
+            .image{
+                width: 300px;
+                display: inline-block;
+                margin: 10px;
+                background-color: transparent;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="/">back</a>
+        <button id="submit-btn">submit choices</button>
+        <div class="row">
+            {% for id, lowres, hires, description in images %}
+                <div class="image" >
+                    <img src={{ lowres }} hires={{hires}} diseaseid={{id}}>
+                    <p>{{description}}</p>
+                </div>
+            {% endfor %} 
+          </div>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            choices = new Set()
+
+            $('img').click((e) => {
+                hires = $(e.target).attr('hires')
+                if(!choices.has(hires)){
+                    choices.add(hires)
+                    $(e.target).parent().css({'background-color': 'tomato'})
+                }else{
+                    choices.delete(hires)
+                    $(e.target).parent().css({'background-color': 'transparent'})
+                }
+            })
+
+            $('#submit-btn').click(() => {
+                id = window.location.href.split('/')[4]
+                $.ajax({
+                    type: "POST",
+                    url: id,
+                    data: {"data": Array.from(choices)}
+                    // success: success,
+                    // dataType: dataType
+                });
+            })
+        });
+    </script>
+</html>

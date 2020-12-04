@@ -1,0 +1,7 @@
+<a href="images.db">download results</a>
+<ul>
+{% for a,b,c,d in diseases %}
+    <li><a href="disease/{{ a }}">{{ ' | '.join((a, c, d)) }}</a></li>
+{% endfor %}
+</ul>
+
